@@ -1,5 +1,5 @@
 package com.example.meajude.entities;
 
-public class Usuario {
+public class User {
     
 }
