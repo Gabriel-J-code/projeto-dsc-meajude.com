@@ -8,6 +8,8 @@ import com.example.meajude.DTO.UserRegisteredDTO;
 import com.example.meajude.entities.User;
 import com.example.meajude.repositories.UserDAO;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 @Service
 public class UserService {
 
@@ -28,4 +30,8 @@ public class UserService {
 
         return UserRegisteredDTO.fromEntity(userEntity);
     }
+
+    /*public UserDetailsService userDetailsService(){
+        ;
+    }*/
 }
