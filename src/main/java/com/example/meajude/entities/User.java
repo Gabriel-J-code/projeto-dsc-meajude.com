@@ -1,23 +1,49 @@
 package com.example.meajude.entities;
 
+
+import com.example.meajude.enums.DocumentType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity 
+@Table(name = "users")
 public class User {
-    private int id;
+
+    @Id @GeneratedValue
+    private long id;
     private String name;
     private String email;
     private String password;
     private String phone;
-    private String numDoc;
-    private String typeDoc;
-    private boolean active;
+    private String documentNumber;
+
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
+
+    private boolean active = true;
     
     public User() {
     }
 
-    public int getId() {
+    public User(String name, String email, String password, String phone, String documentNumber, DocumentType documentType) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.documentNumber = documentNumber;
+        this.documentType = documentType;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -53,20 +79,20 @@ public class User {
         this.phone = phone;
     }
 
-    public String getNumDoc() {
-        return numDoc;
+    public String getDocumentNumber() {
+        return documentNumber;
     }
 
-    public void setNumDoc(String numDoc) {
-        this.numDoc = numDoc;
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
     }
 
-    public String getTypeDoc() {
-        return typeDoc;
+    public DocumentType getDocumentType() {
+        return documentType;
     }
 
-    public void setTypeDoc(String typeDoc) {
-        this.typeDoc = typeDoc;
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
     }
 
     public boolean isActive() {
