@@ -2,6 +2,7 @@ package com.example.meajude.entities;
 
 
 import com.example.meajude.enums.DocumentType;
+import com.example.meajude.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -63,7 +64,6 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        // email in our case
         return email;
     }
 

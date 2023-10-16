@@ -1,4 +1,4 @@
-package com.example.meajude.entities;
+package com.example.meajude.enums;
 
 public enum Role {
     USER,
