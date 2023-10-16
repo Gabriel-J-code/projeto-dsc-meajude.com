@@ -22,8 +22,12 @@ public class JwtService{
     private String jwtSigningKey;
 
     
-    public String extractUserName(String token) {
-        String cleanToken = token.split(" ")[1];
+    public String extractUserName(String token) { 
+        String cleanToken = token;
+        String[] slit = token.split(" "); 
+        if(slit.length > 1){
+            cleanToken = slit[1];
+        }          
         return extractClaim(cleanToken, Claims::getSubject);
     }
 
