@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.meajude.dto.JwtAuthenticationResponse;
-import com.example.meajude.dto.LoginDTO;
-import com.example.meajude.dto.SignUpRequestDTO;
+import com.example.meajude.dtos.JwtAuthenticationResponse;
+import com.example.meajude.dtos.LoginDTO;
+import com.example.meajude.dtos.RegisterUserDTO;
+//import com.example.meajude.dtos.SignUpRequestDTO;
 import com.example.meajude.services.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @PostMapping("/signup")
-    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequestDTO request) {
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody RegisterUserDTO request) {
         return ResponseEntity.ok(authenticationService.signup(request));
     }
 

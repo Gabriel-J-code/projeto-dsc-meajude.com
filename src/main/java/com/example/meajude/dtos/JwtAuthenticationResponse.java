@@ -1,4 +1,4 @@
-package com.example.meajude.dto;
+package com.example.meajude.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
