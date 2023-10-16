@@ -34,3 +34,4 @@ build/
 
 # db
 meajude.mv.db
+meajude.trace.db
