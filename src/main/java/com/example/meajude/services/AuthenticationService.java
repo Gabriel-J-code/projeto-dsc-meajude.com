@@ -25,9 +25,15 @@ public class AuthenticationService{
    
     
     public JwtAuthenticationResponse signup(RegisterUserDTO request) {
-        User user = User.builder().name(request.getName())
-                .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).phone(request.getPhone()).documentNumber(request.getDocumentNumber()).documentType(request.getDocumentType())
-                .role(Role.USER).build();
+        User user = new User(request.getName(),
+                    request.getEmail(),
+                    passwordEncoder.encode(request.getPassword()),
+                    request.getPhone(),
+                    request.getDocumentNumber(),
+                    request.getDocumentType());
+        /* User.builder().name(request.getName())
+                .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).phone(request.getPhone()).documentNumber(request.getDocumentNumber()).documentType(request.getDocumentType()).active(true)
+                .role(Role.USER).build();*/
         userDAO.save(user);
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
