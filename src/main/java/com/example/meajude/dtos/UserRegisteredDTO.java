@@ -1,4 +1,4 @@
-package com.example.meajude.DTO;
+package com.example.meajude.dtos;
 
 import com.example.meajude.enums.DocumentType;
 
