@@ -10,6 +10,7 @@ import com.example.meajude.dtos.LoginDTO;
 import com.example.meajude.dtos.RegisterUserDTO;
 import com.example.meajude.dtos.UserRegisteredDTO;
 import com.example.meajude.entities.User;
+import com.example.meajude.exceptions.ApiExceptions.UserAlreadyExitsException;
 import com.example.meajude.exceptions.ApiExceptions.UserNotFoundException;
 import com.example.meajude.repositories.UserDAO;
 
@@ -26,7 +27,7 @@ public class AuthenticationService{
     public UserRegisteredDTO registerUser(RegisterUserDTO user) {
 
         if (userDAO.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new UserAlreadyExitsException();        
         }
 
         User userEntity = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getPhone(),
