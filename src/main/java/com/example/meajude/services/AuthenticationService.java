@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.meajude.dtos.JwtAuthenticationResponse;
 import com.example.meajude.dtos.LoginDTO;
 import com.example.meajude.dtos.RegisterUserDTO;
+import com.example.meajude.dtos.UserRegisteredDTO;
 import com.example.meajude.entities.User;
-import com.example.meajude.enums.Role;
 import com.example.meajude.exceptions.ApiExceptions.UserNotFoundException;
 import com.example.meajude.repositories.UserDAO;
 
@@ -22,21 +22,19 @@ public class AuthenticationService{
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-   
-    
-    public JwtAuthenticationResponse signup(RegisterUserDTO request) {
-        User user = new User(request.getName(),
-                    request.getEmail(),
-                    passwordEncoder.encode(request.getPassword()),
-                    request.getPhone(),
-                    request.getDocumentNumber(),
-                    request.getDocumentType());
-        /* User.builder().name(request.getName())
-                .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).phone(request.getPhone()).documentNumber(request.getDocumentNumber()).documentType(request.getDocumentType()).active(true)
-                .role(Role.USER).build();*/
-        userDAO.save(user);
-        var jwt = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+       
+    public UserRegisteredDTO registerUser(RegisterUserDTO user) {
+
+        if (userDAO.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        User userEntity = new User(user.getName(), user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getPhone(),
+            user.getDocumentNumber(), user.getDocumentType());
+
+        userDAO.save(userEntity);
+
+        return UserRegisteredDTO.fromEntity(userEntity);
     }
     
     public JwtAuthenticationResponse login(LoginDTO request) {
