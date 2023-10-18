@@ -2,8 +2,6 @@ package com.example.meajude.entities;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.ManyToAny;
-
 import com.example.meajude.enums.State;
 
 import jakarta.persistence.Entity;
@@ -12,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,12 +22,13 @@ public class Campaign {
     private String title;
     private String smallTitle;
     private String description;
-    private double goal;
+    private double goal = 0;
+    private double collected = 0;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean active = true;
 
-    @ManyToAny
+    @ManyToOne
     private User user;
     @Enumerated(EnumType.STRING)
     private State state;
@@ -43,6 +43,15 @@ public class Campaign {
         this.endDate = endDate;
         this.user = user;
         this.state = state;
+    }
+
+    public Campaign(String title, String smallTitle, String description, double goal, LocalDate startDate, LocalDate endDate) {
+        this.title = title;
+        this.smallTitle = smallTitle;
+        this.description = description;
+        this.goal = goal;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public long getId() {
@@ -80,6 +89,14 @@ public class Campaign {
     public void setGoal(double goal) {
         this.goal = goal;
     }
+    
+    public double getCollected() {
+        return collected;
+    }
+
+    public void setCollected(double collected) {
+        this.collected = collected;
+    } 
 
     public LocalDate getStartDate() {
         return startDate;
@@ -119,6 +136,12 @@ public class Campaign {
 
     public void setState(State state) {
         this.state = state;
-    }    
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+       
 
 }

@@ -46,7 +46,7 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    @OneToMany(mappedBy = "id_user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Campaign> campaigns = new ArrayList<Campaign>();
 
     public User(){}
