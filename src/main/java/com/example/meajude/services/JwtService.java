@@ -15,6 +15,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class JwtService{
@@ -29,6 +30,11 @@ public class JwtService{
             cleanToken = slit[1];
         }          
         return extractClaim(cleanToken, Claims::getSubject);
+    }
+
+    public String extractUserName(HttpServletRequest request){
+        String tokenJwt = request.getHeader("Authorization");
+        return extractUserName(tokenJwt);
     }
 
     
