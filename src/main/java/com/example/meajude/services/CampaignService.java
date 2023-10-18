@@ -20,8 +20,8 @@ public class CampaignService {
     @Autowired
     private UserService userService;
 
-    public CampaignDTO registerCampaing(HttpServletRequest request, RegisterCampaingDTO rCDto) {
-        User user = userService.getUserToRequest(request);
+    public CampaignDTO registerCampaing(String authHeader, RegisterCampaingDTO rCDto) {
+        User user = userService.getUserToRequest(authHeader);
         Campaign campaign = rCDto.toCampaing();
         campaign.setUser(user);
         campaign.setState(State.ACTIVE);              

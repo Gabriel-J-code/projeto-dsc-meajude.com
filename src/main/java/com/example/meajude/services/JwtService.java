@@ -31,12 +31,6 @@ public class JwtService{
         }          
         return extractClaim(cleanToken, Claims::getSubject);
     }
-
-    public String extractUserName(HttpServletRequest request){
-        String tokenJwt = request.getHeader("Authorization");
-        return extractUserName(tokenJwt);
-    }
-
     
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);

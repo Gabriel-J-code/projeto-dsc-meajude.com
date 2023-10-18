@@ -40,8 +40,8 @@ public class UserService {
         }
         return usuarioOp.get();
     }
-    public User getUserToRequest(HttpServletRequest request){
-        String userEmail = jwtService.extractUserName(request);
+    public User getUserToRequest(String authHeader){
+        String userEmail = jwtService.extractUserName(authHeader);
         return getUserByEmail(userEmail);
     }
 }

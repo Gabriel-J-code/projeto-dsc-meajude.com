@@ -1,6 +1,7 @@
 package com.example.meajude.dtos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.example.meajude.entities.Campaign;
 
@@ -9,8 +10,11 @@ public class RegisterCampaingDTO {
     private String smallTitle;
     private String description;
     private double goal;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
+
+    public RegisterCampaingDTO() {
+    }
 
     public RegisterCampaingDTO(String title, String smallTitle, String description, double goal, LocalDate startDate,
             LocalDate endDate) {
@@ -18,12 +22,13 @@ public class RegisterCampaingDTO {
         this.smallTitle = smallTitle;
         this.description = description;
         this.goal = goal;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startDate.toString();
+        this.endDate = endDate.toString();
     }
 
     public Campaign toCampaing(){
-        return new Campaign(title, smallTitle, description, goal, startDate, endDate);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return new Campaign(title, smallTitle, description, goal, LocalDate.parse(startDate,dtf), LocalDate.parse(endDate, dtf));
     }
 
     public String getTitle() {
@@ -50,16 +55,16 @@ public class RegisterCampaingDTO {
     public void setGoal(double goal) {
         this.goal = goal;
     }
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

@@ -1,6 +1,7 @@
 package com.example.meajude.dtos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.example.meajude.entities.Campaign;
 
@@ -11,10 +12,11 @@ public class CampaignDTO {
     private String description;
     private double goal;
     private double collected;
-    private LocalDate startDate;
-    private LocalDate endDate;   
+    private String startDate;
+    private String endDate;   
     private String user;
     private String state;
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public CampaignDTO(Campaign campaign){
         this.id = campaign.getId();
@@ -23,8 +25,8 @@ public class CampaignDTO {
         this.description = campaign.getDescription();
         this.goal = campaign.getGoal();
         this.collected = campaign.getCollected();
-        this.startDate = campaign.getStartDate();
-        this.endDate = campaign.getEndDate();
+        this.startDate = campaign.getStartDate().format(dtf);
+        this.endDate = campaign.getEndDate().format(dtf);
         this.user = campaign.getUser().getEmail();
         this.state = campaign.getState().name();
     }
@@ -37,8 +39,8 @@ public class CampaignDTO {
         this.description = description;
         this.goal = goal;
         this.collected = collected;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startDate.format(dtf);
+        this.endDate = endDate.format(dtf);
         this.user = user;
         this.state = state;
     }
@@ -91,19 +93,19 @@ public class CampaignDTO {
         this.collected = collected;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

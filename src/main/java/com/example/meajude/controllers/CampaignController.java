@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +23,9 @@ public class CampaignController {
     private CampaignService campaignService;
 
     @PostMapping()
-    public ResponseEntity<CampaignDTO> register(HttpServletRequest request, RegisterCampaingDTO registerCampaingDTO){
+    public ResponseEntity<CampaignDTO> register(@RequestHeader("Authorization") String authHeader, @RequestBody RegisterCampaingDTO registerCampaingDTO){
         System.out.println(registerCampaingDTO.getGoal());
-        return new ResponseEntity<CampaignDTO>(campaignService.registerCampaing(request,registerCampaingDTO), HttpStatus.OK);
+        return new ResponseEntity<CampaignDTO>(campaignService.registerCampaing(authHeader,registerCampaingDTO), HttpStatus.OK);
     } 
     
     @GetMapping()
