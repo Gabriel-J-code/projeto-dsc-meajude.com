@@ -14,8 +14,6 @@ import com.example.meajude.dtos.CampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.services.CampaignService;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping("/api/v1/campaign")
 public class CampaignController {

@@ -41,6 +41,9 @@ public class AuthenticationService{
     public JwtAuthenticationResponse login(LoginDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        if(!userDAO.existsByEmail(request.getEmail())){
+            throw new UserNotFoundException();
+        }
         var user = userDAO.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserNotFoundException());
         var jwt = jwtService.generateToken(user);

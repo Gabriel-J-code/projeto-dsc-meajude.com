@@ -5,7 +5,6 @@ import com.example.meajude.enums.DocumentType;
 import com.example.meajude.enums.Role;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,8 +40,7 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 
-    @Column(columnDefinition ="default = true")
-    private boolean active;
+    private boolean active = true;
     @Enumerated(EnumType.STRING)
     private Role role;
     

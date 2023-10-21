@@ -9,8 +9,6 @@ import com.example.meajude.entities.User;
 import com.example.meajude.exceptions.ApiExceptions.UserNotFoundException;
 import com.example.meajude.repositories.UserDAO;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
