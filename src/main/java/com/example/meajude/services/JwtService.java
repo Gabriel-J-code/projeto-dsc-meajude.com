@@ -30,7 +30,6 @@ public class JwtService{
         }          
         return extractClaim(cleanToken, Claims::getSubject);
     }
-
     
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);

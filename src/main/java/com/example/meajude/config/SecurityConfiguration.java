@@ -4,6 +4,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.example.meajude.services.UserService;
@@ -33,8 +35,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(new MvcRequestMatcher(new HandlerMappingIntrospector(), "/api/v1/auth/**"))
-                        .permitAll().anyRequest().authenticated())
+                        .requestMatchers(new MvcRequestMatcher(new HandlerMappingIntrospector(), "/api/v1/auth/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign",HttpMethod.POST.toString())).authenticated()
+                        .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
