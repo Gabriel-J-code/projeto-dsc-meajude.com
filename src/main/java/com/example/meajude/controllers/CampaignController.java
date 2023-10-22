@@ -30,13 +30,21 @@ public class CampaignController {
         return new ResponseEntity<CampaignDTO>(campaignService.registerCampaing(authHeader,registerCampaingDTO), HttpStatus.OK);
     } 
 
+    @GetMapping()
+    public ResponseEntity<List<SimpleCampaignDTO>> getCampaigns(){
+        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
+    }
+
+    @GetMapping("/completeds")
+    public ResponseEntity<List<SimpleCampaignDTO>> findAllCompletedCampaigns(){
+        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
+    }
+
+    //donatios
     @PostMapping("/{id}/donations")
     public ResponseEntity<CampaignDTO> registerDonation(@RequestHeader("Authorization") String authHeader, @PathVariable int id, @RequestBody RegisterDonationDTO rdDTO){
         return new ResponseEntity<CampaignDTO>(campaignService.registerDonation(authHeader, id, rdDTO), HttpStatus.OK);
     }
     
-    @GetMapping()
-    public ResponseEntity<List<SimpleCampaignDTO>> registerDonatio(){
-        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
-    }
+    
 }

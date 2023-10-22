@@ -100,5 +100,9 @@ public class CampaignService {
         }
         return simpleCampaignDTOs;
     }
+
+    public List<SimpleCampaignDTO> findAllCompletedCampaigns() {
+        return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
+    }
     
 }
