@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.meajude.dtos.CampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
-import com.example.meajude.dtos.SimpleCampaignDTO;
 import com.example.meajude.services.CampaignService;
 
 @RestController
@@ -31,13 +30,13 @@ public class CampaignController {
     } 
 
     @GetMapping()
-    public ResponseEntity<List<SimpleCampaignDTO>> getCampaigns(){
-        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
+    public ResponseEntity<List<CampaignDTO>> getCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
     }
 
     @GetMapping("/completeds")
-    public ResponseEntity<List<SimpleCampaignDTO>> findAllCompletedCampaigns(){
-        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
+    public ResponseEntity<List<CampaignDTO>> findAllCompletedCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
     }
 
     //donatios

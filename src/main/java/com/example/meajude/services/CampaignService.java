@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.example.meajude.dtos.CampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
-import com.example.meajude.dtos.SimpleCampaignDTO;
 import com.example.meajude.entities.Campaign;
 import com.example.meajude.entities.Donation;
 import com.example.meajude.entities.User;
@@ -89,19 +88,19 @@ public class CampaignService {
         return campaignOp.get();
     }
 
-    public List<SimpleCampaignDTO> getCampaignOrderBySmallTitle() {        
+    public List<CampaignDTO> getCampaignOrderBySmallTitle() {        
         return convertListCampaignToListSimple(campaignDAO.findByActiveTrueOrderBySmallTitle());
     }
 
-    public List<SimpleCampaignDTO> convertListCampaignToListSimple(List<Campaign> campaigns){
-        List<SimpleCampaignDTO> simpleCampaignDTOs = new ArrayList<SimpleCampaignDTO>();
+    public List<CampaignDTO> convertListCampaignToListSimple(List<Campaign> campaigns){
+        List<CampaignDTO> CampaignDTOs = new ArrayList<CampaignDTO>();
         for (Campaign campaign : campaigns) {
-            simpleCampaignDTOs.add(new SimpleCampaignDTO(campaign));            
+            CampaignDTOs.add(new CampaignDTO(campaign));            
         }
-        return simpleCampaignDTOs;
+        return CampaignDTOs;
     }
 
-    public List<SimpleCampaignDTO> findAllCompletedCampaigns() {
+    public List<CampaignDTO> findAllCompletedCampaigns() {
         return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
     }
     
