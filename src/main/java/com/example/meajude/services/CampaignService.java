@@ -77,7 +77,8 @@ public class CampaignService {
         }
         Donation donation = new Donation(rdDTO.getValue(), LocalDateTime.now(), user, campaign);
         donationDAO.save(donation);
-        return new CampaignDTO(getCampaignById(id));
+        campaign.setCollected(campaign.getCollected() + rdDTO.getValue());
+        return new CampaignDTO(campaignDAO.save(campaign));
     }
 
     public Campaign getCampaignById(long id){
