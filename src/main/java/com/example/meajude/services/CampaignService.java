@@ -10,14 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.meajude.dtos.CampaignDTO;
+import com.example.meajude.dtos.NewTitleCampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
 import com.example.meajude.entities.Campaign;
 import com.example.meajude.entities.Donation;
 import com.example.meajude.entities.User;
+import com.example.meajude.enums.Role;
 import com.example.meajude.enums.State;
 import com.example.meajude.exceptions.ApiExceptions.CampaignAlreadyClosedException;
 import com.example.meajude.exceptions.ApiExceptions.CampaignNotFoundException;
+import com.example.meajude.exceptions.ApiExceptions.ForbiddenActionException;
 import com.example.meajude.exceptions.ApiExceptions.InvalidFieldException;
 import com.example.meajude.repositories.CampaignDAO;
 import com.example.meajude.repositories.DonationDAO;
@@ -65,6 +68,22 @@ public class CampaignService {
         }
     }
 
+    public CampaignDTO editCampaignTitle(String authHeader, int id, NewTitleCampaignDTO ntcdto) {
+        Campaign campaign = userCanEditCampaign(authHeader, id, "User unauthorized to edit campaign's title");
+        validationStringField(ntcdto.getNewTitle(), "New Title cannot be blank");
+        campaign.setTitle(ntcdto.getNewTitle());
+        return new CampaignDTO(campaignDAO.save(campaign));
+    }
+
+    public Campaign userCanEditCampaign(String authHeader, int id, String msgForbidden){
+        User user = userService.getUserToRequest(authHeader);
+        Campaign campaign = getCampaignById(id);
+        if(!(campaign.getUser()==user || user.getRole() == Role.ADMIN)){
+            throw new ForbiddenActionException(msgForbidden);
+        }
+        return campaign;
+    }
+
     //donation
     public CampaignDTO registerDonation(String authHeader, int id, RegisterDonationDTO rdDTO) {
         if(rdDTO.getValue() <= 0){
@@ -104,5 +123,7 @@ public class CampaignService {
     public List<CampaignDTO> findAllCompletedCampaigns() {
         return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
     }
+
+    
     
 }
