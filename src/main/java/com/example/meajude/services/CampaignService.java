@@ -2,6 +2,8 @@ package com.example.meajude.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.meajude.dtos.CampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
+import com.example.meajude.dtos.SimpleCampaignDTO;
 import com.example.meajude.entities.Campaign;
 import com.example.meajude.entities.Donation;
 import com.example.meajude.entities.User;
@@ -84,6 +87,18 @@ public class CampaignService {
             throw new CampaignNotFoundException();
         }
         return campaignOp.get();
+    }
+
+    public List<SimpleCampaignDTO> getCampaignOrderBySmallTitle() {        
+        return convertListCampaignToListSimple(campaignDAO.findByActiveTrueOrderBySmallTitle());
+    }
+
+    public List<SimpleCampaignDTO> convertListCampaignToListSimple(List<Campaign> campaigns){
+        List<SimpleCampaignDTO> simpleCampaignDTOs = new ArrayList<SimpleCampaignDTO>();
+        for (Campaign campaign : campaigns) {
+            simpleCampaignDTOs.add(new SimpleCampaignDTO(campaign));            
+        }
+        return simpleCampaignDTOs;
     }
     
 }

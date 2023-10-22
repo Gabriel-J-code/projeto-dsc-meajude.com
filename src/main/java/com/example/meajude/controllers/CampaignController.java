@@ -1,5 +1,7 @@
 package com.example.meajude.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.meajude.dtos.CampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
+import com.example.meajude.dtos.SimpleCampaignDTO;
 import com.example.meajude.services.CampaignService;
 
 @RestController
@@ -33,9 +36,7 @@ public class CampaignController {
     }
     
     @GetMapping()
-    public ResponseEntity<String> test(){
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+    public ResponseEntity<List<SimpleCampaignDTO>> registerDonatio(){
+        return new ResponseEntity<List<SimpleCampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
     }
-
-    
 }
