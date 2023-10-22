@@ -1,9 +1,13 @@
 package com.example.meajude.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.meajude.enums.State;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,16 +29,20 @@ public class Campaign {
     private String description;
     private double goal = 0;
     private double collected = 0;
-    private LocalDate startDate;
+    private LocalDateTime startDate;
     private LocalDate endDate;
     private boolean active = true;
-
-    @ManyToOne
-    private User user;
     @Enumerated(EnumType.STRING)
     private State state;
 
-    public Campaign(String title, String smallTitle, String description, double goal, LocalDate startDate,
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Donation> donations = new ArrayList<Donation>();
+    
+
+    public Campaign(String title, String smallTitle, String description, double goal, LocalDateTime startDate,
             LocalDate endDate, User user, State state) {
         this.title = title;
         this.smallTitle = smallTitle;
@@ -45,7 +54,7 @@ public class Campaign {
         this.state = state;
     }
 
-    public Campaign(String title, String smallTitle, String description, double goal, LocalDate startDate, LocalDate endDate) {
+    public Campaign(String title, String smallTitle, String description, double goal, LocalDateTime startDate, LocalDate endDate) {
         this.title = title;
         this.smallTitle = smallTitle;
         this.description = description;
@@ -98,11 +107,11 @@ public class Campaign {
         this.collected = collected;
     } 
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -142,6 +151,12 @@ public class Campaign {
         this.id = id;
     }
 
-       
+    public List<Donation> getDonations(){
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations){
+        this.donations = donations;
+    }
 
 }

@@ -47,6 +47,9 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Campaign> campaigns = new ArrayList<Campaign>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Donation> donations = new ArrayList<Donation>();
+
     public User(){}
 
     public User(String name, String email, String password, String phone, String documentNumber,
@@ -163,9 +166,20 @@ public class User implements UserDetails{
     public void setRole(Role role) {
         this.role = role;
     }
+    
+    public List<Campaign> getCampaigns(){
+        return campaigns;
+    }
 
-    
+    public void setCampaigns(List<Campaign> campaigns){
+        this.campaigns = campaigns;
+    }
 
-    
-    
+    public List<Donation> getDonations(){
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations){
+        this.donations = donations;
+    }
 }

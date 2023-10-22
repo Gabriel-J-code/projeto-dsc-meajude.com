@@ -1,6 +1,7 @@
 package com.example.meajude.dtos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.example.meajude.entities.Campaign;
@@ -27,7 +28,7 @@ public class RegisterCampaingDTO {
     }
 
     public Campaign toCampaing(User user, State state) {
-        return new Campaign(title, smallTitle, description, goal, LocalDate.now(), getEndDateFormat(), user, state);
+        return new Campaign(title, smallTitle, description, goal, LocalDateTime.now(), getEndDateFormat(), user, state);
     }
 
     public String getTitle() {
