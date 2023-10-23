@@ -6,6 +6,7 @@ import com.example.meajude.entities.User;
 
 public class UserRegisteredDTO {
     
+    public Long id;
     public String name;
     public String email;
     public String phone;
@@ -19,7 +20,8 @@ public class UserRegisteredDTO {
     public UserRegisteredDTO() {
     }
 
-    public UserRegisteredDTO(String name, String email, String phone, String documentNumber, DocumentType documentType) {
+    public UserRegisteredDTO(Long id, String name, String email, String phone, String documentNumber, DocumentType documentType) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -28,6 +30,10 @@ public class UserRegisteredDTO {
     }
 
     // Getters
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -54,6 +60,11 @@ public class UserRegisteredDTO {
     }
 
     // Setters
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -83,6 +94,7 @@ public class UserRegisteredDTO {
 
     public static UserRegisteredDTO fromEntity(User user) {
         return new UserRegisteredDTO(
+            user.getId(),
             user.getName(),
             user.getEmail(),
             user.getPhone(),
