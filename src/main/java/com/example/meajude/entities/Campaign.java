@@ -41,6 +41,8 @@ public class Campaign {
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Donation> donations = new ArrayList<Donation>();
     
+    public Campaign() {
+    }
 
     public Campaign(String title, String smallTitle, String description, double goal, LocalDateTime startDate,
             LocalDate endDate, User user, State state) {

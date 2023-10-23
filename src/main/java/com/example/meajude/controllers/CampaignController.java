@@ -1,5 +1,7 @@
 package com.example.meajude.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +29,21 @@ public class CampaignController {
         return new ResponseEntity<CampaignDTO>(campaignService.registerCampaing(authHeader,registerCampaingDTO), HttpStatus.OK);
     } 
 
+    @GetMapping()
+    public ResponseEntity<List<CampaignDTO>> getCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.getCampaignOrderBySmallTitle(), HttpStatus.OK);
+    }
+
+    @GetMapping("/completeds")
+    public ResponseEntity<List<CampaignDTO>> findAllCompletedCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
+    }
+
+    //donatios
     @PostMapping("/{id}/donations")
     public ResponseEntity<CampaignDTO> registerDonation(@RequestHeader("Authorization") String authHeader, @PathVariable int id, @RequestBody RegisterDonationDTO rdDTO){
         return new ResponseEntity<CampaignDTO>(campaignService.registerDonation(authHeader, id, rdDTO), HttpStatus.OK);
     }
     
-    @GetMapping()
-    public ResponseEntity<String> test(){
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
-    }
-
     
 }
