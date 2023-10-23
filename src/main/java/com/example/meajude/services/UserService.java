@@ -5,7 +5,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.meajude.dtos.UpdateUserDTO;
+import com.example.meajude.dtos.UserUpdatedDTO;
 import com.example.meajude.entities.User;
+import com.example.meajude.enums.Role;
+import com.example.meajude.exceptions.ApiExceptions.UnauthorizedActionException;
+import com.example.meajude.exceptions.ApiExceptions.UserAlreadyExitsException;
 import com.example.meajude.exceptions.ApiExceptions.UserNotFoundException;
 import com.example.meajude.repositories.UserDAO;
 
@@ -20,6 +25,56 @@ public class UserService {
     private UserDAO userDAO;
     @Autowired
     private JwtService jwtService;
+
+    public UserUpdatedDTO updateUser(String authHeader, Long userId, UpdateUserDTO updateUserDTO) {
+        
+        User authUser = getUserToRequest(authHeader);
+
+        if (authUser.getId() != userId && authUser.getRole() != Role.ADMIN) {
+            throw new UnauthorizedActionException();
+        }
+
+        User user = userDAO.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException());
+
+        if (updateUserDTO.getEmail() != null) {
+
+            Optional<User> userOp = userDAO.findByEmail(updateUserDTO.getEmail());
+
+            if (userOp.isPresent() && userOp.get().getId() != userId) {
+                throw new UserAlreadyExitsException();
+            }
+
+            user.setEmail(updateUserDTO.getEmail());
+        }
+
+        if (updateUserDTO.getName() != null) {
+            user.setName(updateUserDTO.getName());
+        }
+
+        if (updateUserDTO.getPhone() != null) {
+            user.setPhone(updateUserDTO.getPhone());
+        }
+
+        if (updateUserDTO.getDocumentNumber() != null) {
+            user.setDocumentNumber(updateUserDTO.getDocumentNumber());
+        }
+
+        if (updateUserDTO.getDocumentType() != null) {
+            user.setDocumentType(updateUserDTO.getDocumentType());
+        }
+
+        if (updateUserDTO.getPassword() != null) {
+            user.setPassword(updateUserDTO.getPassword());
+        }
+        
+        userDAO.save(user);
+
+        UserUpdatedDTO userUpdatedDTO = new UserUpdatedDTO(user.getId(), user.getEmail(), user.getName(),
+                user.getPhone(), user.getDocumentNumber(), user.getDocumentType());
+
+        return userUpdatedDTO;
+    }
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
