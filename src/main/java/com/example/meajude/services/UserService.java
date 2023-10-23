@@ -70,10 +70,26 @@ public class UserService {
         
         userDAO.save(user);
 
-        UserUpdatedDTO userUpdatedDTO = new UserUpdatedDTO(user.getId(), user.getEmail(), user.getName(),
-                user.getPhone(), user.getDocumentNumber(), user.getDocumentType());
+        UserUpdatedDTO userUpdatedDTO = UserUpdatedDTO.fromEntity(user);
 
         return userUpdatedDTO;
+    }
+
+    public UserUpdatedDTO deleteUser(String authHeader, Long userId) {
+        User authUser = getUserToRequest(authHeader);
+
+        if (authUser.getId() != userId && authUser.getRole() != Role.ADMIN) {
+            throw new UnauthorizedActionException();
+        }
+
+        User user = userDAO.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException());
+
+        user.setActive(false);
+
+        userDAO.save(user);
+
+        return UserUpdatedDTO.fromEntity(user);
     }
 
     public UserDetailsService userDetailsService() {
