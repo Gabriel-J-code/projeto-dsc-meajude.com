@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.meajude.dtos.CampaignDTO;
-import com.example.meajude.dtos.NewTitleCampaignDTO;
+import com.example.meajude.dtos.EditCampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
 import com.example.meajude.entities.Campaign;
@@ -68,20 +68,51 @@ public class CampaignService {
         }
     }
 
-    public CampaignDTO editCampaignTitle(String authHeader, int id, NewTitleCampaignDTO ntcdto) {
-        Campaign campaign = userCanEditCampaign(authHeader, id, "User unauthorized to edit campaign's title");
-        validationStringField(ntcdto.getNewTitle(), "New Title cannot be blank");
-        campaign.setTitle(ntcdto.getNewTitle());
+    public CampaignDTO editCampaign(String authHeader, int id, EditCampaignDTO ecdto) {
+        Campaign campaign = userCanEditCampaign(authHeader, id);
+        validationCampaing(ecdto);
+        campaign = ecdto.updateCampaign(campaign);
         return new CampaignDTO(campaignDAO.save(campaign));
-    }
+    }    
 
-    public Campaign userCanEditCampaign(String authHeader, int id, String msgForbidden){
+    public Campaign userCanEditCampaign(String authHeader, int id){
         User user = userService.getUserToRequest(authHeader);
         Campaign campaign = getCampaignById(id);
         if(!(campaign.getUser()==user || user.getRole() == Role.ADMIN)){
-            throw new ForbiddenActionException(msgForbidden);
+            throw new ForbiddenActionException("The user cannot edit this campaign because they are not the owner and do not have an administrator role.");
+        }
+        if (!campaign.getEndDate().isAfter(LocalDate.now())){
+            throw new ForbiddenActionException("Campaigns cannot be edited on or after the closing date.");
         }
         return campaign;
+    }
+
+    public void validationCampaing(EditCampaignDTO ecdto){ 
+         
+        if(!ecdto.getSmallTitle().isBlank() && ecdto.getSmallTitle().length() > 100){
+            throw new InvalidFieldException("Small title cannot be longer than 100 characters");
+        }         
+        if(!ecdto.getDescription().isBlank() && ecdto.getDescription().length() > 1000){
+            throw new InvalidFieldException("Description cannot be longer than 1000 characters");
+        }
+        if(ecdto != null &&(ecdto.getGoal() <= 0) ){
+            throw new InvalidFieldException("Goal must be greater than zero");
+        }
+        if(!ecdto.getEndDate().isBlank() && (ecdto.getEndDateFormat().isBefore(LocalDate.now()) || ecdto.getEndDateFormat().isEqual(LocalDate.now()))){
+            throw new InvalidFieldException("End Date must be in the future");
+        }        
+        if(!ecdto.getState().isBlank()){
+            try {
+                State.valueOf(ecdto.getState());
+            } catch (IllegalArgumentException e) {
+                List<String> states = new ArrayList<String>();
+                for (State state : State.values()) {
+                states.add(state.name());          
+                }
+                throw new InvalidFieldException(String.format("State must be in %s", states.toString()));
+            }            
+        }
+        
     }
 
     //donation
@@ -123,6 +154,8 @@ public class CampaignService {
     public List<CampaignDTO> findAllCompletedCampaigns() {
         return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
     }
+
+    
 
     
     
