@@ -27,7 +27,7 @@ public class CampaignDTO {
         this.collected = campaign.getCollected();
         this.startDate = campaign.getStartDate().format(dtf);
         this.endDate = campaign.getEndDate().format(dtf);
-        this.user = campaign.getUser().getEmail();
+        this.user = campaign.getUser().getName();
         this.state = campaign.getState().name();
     }
 

@@ -2,6 +2,8 @@ package com.example.meajude.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +77,8 @@ public class CampaignService {
         }
         Donation donation = new Donation(rdDTO.getValue(), LocalDateTime.now(), user, campaign);
         donationDAO.save(donation);
-        return new CampaignDTO(getCampaignById(id));
+        campaign.setCollected(campaign.getCollected() + rdDTO.getValue());
+        return new CampaignDTO(campaignDAO.save(campaign));
     }
 
     public Campaign getCampaignById(long id){
@@ -84,6 +87,22 @@ public class CampaignService {
             throw new CampaignNotFoundException();
         }
         return campaignOp.get();
+    }
+
+    public List<CampaignDTO> getCampaignOrderBySmallTitle() {        
+        return convertListCampaignToListSimple(campaignDAO.findByActiveTrueOrderBySmallTitle());
+    }
+
+    public List<CampaignDTO> convertListCampaignToListSimple(List<Campaign> campaigns){
+        List<CampaignDTO> CampaignDTOs = new ArrayList<CampaignDTO>();
+        for (Campaign campaign : campaigns) {
+            CampaignDTOs.add(new CampaignDTO(campaign));            
+        }
+        return CampaignDTOs;
+    }
+
+    public List<CampaignDTO> findAllCompletedCampaigns() {
+        return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
     }
     
 }

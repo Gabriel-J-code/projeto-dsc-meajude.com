@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         .requestMatchers(new MvcRequestMatcher(new HandlerMappingIntrospector(), "/api/v1/auth/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/users",HttpMethod.PATCH.toString())).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign",HttpMethod.POST.toString())).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign/**",HttpMethod.GET.toString())).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
