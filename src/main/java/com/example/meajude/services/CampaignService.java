@@ -73,7 +73,23 @@ public class CampaignService {
         validationCampaing(ecdto);
         campaign = ecdto.updateCampaign(campaign);
         return new CampaignDTO(campaignDAO.save(campaign));
-    }    
+    }
+    
+    public CampaignDTO deleteCampaign(String authHeader, int id) {
+        Campaign campaign = userCanDeleteCampaign(authHeader, id);
+        campaign.setActive(false);
+        return new CampaignDTO(campaignDAO.save(campaign));
+    }
+
+    public Campaign userCanDeleteCampaign(String authHeader, int id){
+        User user = userService.getUserToRequest(authHeader);
+        Campaign campaign = getCampaignById(id);
+        if(!(campaign.getUser()==user || user.getRole() == Role.ADMIN)){
+            throw new ForbiddenActionException("The user cannot delete this campaign because they are not the owner and do not have an administrator role.");
+        }
+        
+        return campaign;
+    }
 
     public Campaign userCanEditCampaign(String authHeader, int id){
         User user = userService.getUserToRequest(authHeader);
