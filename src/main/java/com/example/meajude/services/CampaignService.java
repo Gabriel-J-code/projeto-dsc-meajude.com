@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.meajude.dtos.CampaignDTO;
+import com.example.meajude.dtos.DontaionDTO;
 import com.example.meajude.dtos.EditCampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
@@ -113,23 +114,7 @@ public class CampaignService {
             }            
         }
         
-    }
-
-    //donation
-    public CampaignDTO registerDonation(String authHeader, int id, RegisterDonationDTO rdDTO) {
-        if(rdDTO.getValue() <= 0){
-            throw new InvalidFieldException("Donation Value must be greater than zero");
-        }
-        User user = userService.getUserToRequest(authHeader);
-        Campaign campaign = getCampaignById(id);
-        if(campaign.getState().equals(State.CLOSED)){
-            throw new CampaignAlreadyClosedException();
-        }
-        Donation donation = new Donation(rdDTO.getValue(), LocalDateTime.now(), user, campaign);
-        donationDAO.save(donation);
-        campaign.setCollected(campaign.getCollected() + rdDTO.getValue());
-        return new CampaignDTO(campaignDAO.save(campaign));
-    }
+    }   
 
     public Campaign getCampaignById(long id){
         Optional<Campaign> campaignOp = campaignDAO.findByIdAndActiveTrue(id);
@@ -153,6 +138,39 @@ public class CampaignService {
 
     public List<CampaignDTO> findAllCompletedCampaigns() {
         return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
+    }
+
+    //donation
+    public CampaignDTO registerDonation(String authHeader, int id, RegisterDonationDTO rdDTO) {
+        if(rdDTO.getValue() <= 0){
+            throw new InvalidFieldException("Donation Value must be greater than zero");
+        }
+        User user = userService.getUserToRequest(authHeader);
+        Campaign campaign = getCampaignById(id);
+        if(campaign.getState().equals(State.CLOSED)){
+            throw new CampaignAlreadyClosedException();
+        }
+        Donation donation = new Donation(rdDTO.getValue(), LocalDateTime.now(), user, campaign);
+        donationDAO.save(donation);
+        campaign.setCollected(campaign.getCollected() + rdDTO.getValue());
+        return new CampaignDTO(campaignDAO.save(campaign));
+    }
+
+    public List<DontaionDTO> listDonations() {        
+        return convertListDonationToListDTO(donationDAO.findAllByCampaignActiveTrueOrderByDateTimeAsc());
+    }
+
+    public List<DontaionDTO> convertListDonationToListDTO(List<Donation> donations){
+        List<DontaionDTO> dontaionDTOs = new ArrayList<DontaionDTO>();
+        for (Donation donation : donations) {
+            dontaionDTOs.add(new DontaionDTO(donation));            
+        }
+        return dontaionDTOs;
+    }
+
+    public List<DontaionDTO> listDonations(long id) {
+        getCampaignById(id);
+        return convertListDonationToListDTO(donationDAO.findAllByCampaignId(id));
     }
 
     
