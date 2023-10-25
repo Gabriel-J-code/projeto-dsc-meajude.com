@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.meajude.dtos.CampaignDTO;
+import com.example.meajude.dtos.EditCampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
 import com.example.meajude.services.CampaignService;
@@ -37,6 +39,11 @@ public class CampaignController {
     @GetMapping("/completeds")
     public ResponseEntity<List<CampaignDTO>> findAllCompletedCampaigns(){
         return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/edit")
+    public ResponseEntity<CampaignDTO> editCampaign(@RequestHeader("Authorization") String authHeader, @PathVariable int id, @RequestBody EditCampaignDTO ntcdto){
+        return new ResponseEntity<CampaignDTO>(campaignService.editCampaign(authHeader, id, ntcdto),  HttpStatus.OK);
     }
 
     //donatios

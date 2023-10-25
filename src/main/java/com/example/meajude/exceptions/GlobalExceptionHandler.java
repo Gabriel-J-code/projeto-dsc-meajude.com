@@ -2,6 +2,7 @@ package com.example.meajude.exceptions;
 
 
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         
         return ResponseEntity.status(e.getCode()).body(body);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException e){
+        Map<String, Object> body = Map.of(
+            "message", "Invalid Date Format, expected dd/MM/yyyy.",
+            "code", HttpStatus.BAD_REQUEST.value()
+        );
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
     
     @ExceptionHandler(Exception.class)

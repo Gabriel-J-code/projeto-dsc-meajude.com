@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/users",HttpMethod.PATCH.toString())).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/users", HttpMethod.DELETE.toString())).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign",HttpMethod.POST.toString())).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign",HttpMethod.PATCH.toString())).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/v1/campaign/**",HttpMethod.GET.toString())).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
