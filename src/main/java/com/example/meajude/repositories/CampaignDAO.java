@@ -17,4 +17,10 @@ public interface CampaignDAO extends JpaRepository<Campaign , Long>{
     @Query("select c from Campaign c where c.collected >= c.goal")
     public List<Campaign> findCompletedCampaigns();
 
+    @Query("select c from Campaign c where c.collected < c.goal and c.endDate >= current_date order by c.startDate asc")
+    public List<Campaign> findActiveCampaigns();
+
+    @Query("select c from Campaign c where c.endDate < current_date order by c.startDate asc")
+    public List<Campaign> findClosedCampaigns();
+
 }

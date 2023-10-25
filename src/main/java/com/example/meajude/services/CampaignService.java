@@ -155,6 +155,15 @@ public class CampaignService {
         return convertListCampaignToListSimple(campaignDAO.findCompletedCampaigns());
     }
 
+
+    public List<CampaignDTO> findAllActiveCampaigns() {
+        return convertListCampaignToListSimple(campaignDAO.findActiveCampaigns());
+    }
+
+    public List<CampaignDTO> findAllClosedCampaigns() {
+        return convertListCampaignToListSimple(campaignDAO.findClosedCampaigns());
+    }
+
     
 
     
