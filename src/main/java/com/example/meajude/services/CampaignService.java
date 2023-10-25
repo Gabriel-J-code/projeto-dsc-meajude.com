@@ -168,6 +168,11 @@ public class CampaignService {
         return dontaionDTOs;
     }
 
+    public List<DontaionDTO> listDonations(long id) {
+        getCampaignById(id);
+        return convertListDonationToListDTO(donationDAO.findAllByCampaignId(id));
+    }
+
     
 
     

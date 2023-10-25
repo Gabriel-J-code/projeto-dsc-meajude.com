@@ -57,6 +57,11 @@ public class CampaignController {
     public ResponseEntity<List<DontaionDTO>> listDonations(){
         return new ResponseEntity<List<DontaionDTO>>( campaignService.listDonations(), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/donations")
+    public ResponseEntity<List<DontaionDTO>> listDonations(@PathVariable long id){
+        return new ResponseEntity<List<DontaionDTO>>( campaignService.listDonations(id), HttpStatus.OK);
+    }
     
     
 }

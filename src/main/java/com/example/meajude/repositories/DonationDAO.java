@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DonationDAO extends JpaRepository<Donation, Long>{
     public List<Donation> findAllByCampaignActiveTrueOrderByDateTimeAsc();
+    public List<Donation> findAllByCampaignId(long id);
 }
