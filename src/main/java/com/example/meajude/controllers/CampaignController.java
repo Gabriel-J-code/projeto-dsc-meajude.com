@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.meajude.dtos.CampaignDTO;
+import com.example.meajude.dtos.DontaionDTO;
 import com.example.meajude.dtos.EditCampaignDTO;
 import com.example.meajude.dtos.RegisterCampaingDTO;
 import com.example.meajude.dtos.RegisterDonationDTO;
@@ -50,6 +51,11 @@ public class CampaignController {
     @PostMapping("/{id}/donations")
     public ResponseEntity<CampaignDTO> registerDonation(@RequestHeader("Authorization") String authHeader, @PathVariable int id, @RequestBody RegisterDonationDTO rdDTO){
         return new ResponseEntity<CampaignDTO>(campaignService.registerDonation(authHeader, id, rdDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/donations")
+    public ResponseEntity<List<DontaionDTO>> listDonations(){
+        return new ResponseEntity<List<DontaionDTO>>( campaignService.listDonations(), HttpStatus.OK);
     }
     
     
