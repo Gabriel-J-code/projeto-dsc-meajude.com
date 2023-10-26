@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,9 +43,24 @@ public class CampaignController {
         return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllCompletedCampaigns(), HttpStatus.OK);
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<List<CampaignDTO>> findAllActiveCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllActiveCampaigns(), HttpStatus.OK);
+    }
+
+    @GetMapping("/closed")
+    public ResponseEntity<List<CampaignDTO>> findAllFinishedCampaigns(){
+        return new ResponseEntity<List<CampaignDTO>>(campaignService.findAllClosedCampaigns(), HttpStatus.OK);
+    }
+
     @PatchMapping("/{id}/edit")
     public ResponseEntity<CampaignDTO> editCampaign(@RequestHeader("Authorization") String authHeader, @PathVariable int id, @RequestBody EditCampaignDTO ntcdto){
         return new ResponseEntity<CampaignDTO>(campaignService.editCampaign(authHeader, id, ntcdto),  HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CampaignDTO> deleteCampaign(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
+        return new ResponseEntity<CampaignDTO>(campaignService.deleteCampaign(authHeader, id), HttpStatus.OK);
     }
 
     //donatios
