@@ -16,6 +16,7 @@ import com.example.meajude.services.JwtService;
 import com.example.meajude.services.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,6 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
             response.setContentType("application/json");
             String jsonResponse = "{\"error\": \"Unauthorized\", \"message\": \"JWT token has expired\"}";
+            
+            response.getWriter().write(jsonResponse);
+            return;
+        } catch (JwtException e){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    
+            response.setContentType("application/json");
+            String jsonResponse = "{\"error\": \"Unauthorized\", \"message\": \"JWT token is invalid\"}";
             
             response.getWriter().write(jsonResponse);
             return;

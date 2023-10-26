@@ -16,6 +16,7 @@ public class CampaignDTO {
     private String endDate;   
     private String user;
     private String state;
+    private boolean active;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public CampaignDTO(Campaign campaign){
@@ -29,6 +30,7 @@ public class CampaignDTO {
         this.endDate = campaign.getEndDate().format(dtf);
         this.user = campaign.getUser().getName();
         this.state = campaign.getState().name();
+        this.active = campaign.isActive();
     }
 
     public CampaignDTO(long id, String title, String smallTitle, String description, double goal, double collected,
@@ -123,5 +125,15 @@ public class CampaignDTO {
 
     public void setState(String state) {
         this.state = state;
-    }    
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }  
+    
+    
 }
