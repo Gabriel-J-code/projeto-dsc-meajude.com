@@ -163,6 +163,7 @@ public class CampaignService {
 
     public List<CampaignDTO> findAllClosedCampaigns() {
         return convertListCampaignToListSimple(campaignDAO.findClosedCampaigns());
+    }
 
     //donation
     public CampaignDTO registerDonation(String authHeader, int id, RegisterDonationDTO rdDTO) {
